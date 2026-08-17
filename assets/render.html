@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Varritech - AI Credit Resale Economy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 2400px;
+      height: 2400px;
+      font-family: 'Chakra Petch', sans-serif;
+      background: #0a0020;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background gradient blobs (freeform, NOT linear/radial) */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+    }
+
+    .blob-1 {
+      width: 800px;
+      height: 800px;
+      background: #4c1d95;
+      top: -200px;
+      right: -200px;
+    }
+
+    .blob-2 {
+      width: 600px;
+      height: 600px;
+      background: #059669;
+      bottom: -100px;
+      left: -100px;
+    }
+
+    .blob-3 {
+      width: 500px;
+      height: 500px;
+      background: #db2777;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Vignette */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 0, 32, 0.6) 100%);
+      pointer-events: none;
+      z-index: 11;
+    }
+
+    /* Bauhaus decorative shapes */
+    .bauhaus-shape {
+      position: absolute;
+      opacity: 0.12;
+    }
+
+    .bauhaus-circle {
+      width: 200px;
+      height: 200px;
+      border: 8px solid #bef264;
+      border-radius: 50%;
+      top: 150px;
+      left: 150px;
+    }
+
+    .bauhaus-rect {
+      width: 150px;
+      height: 300px;
+      background: #f97316;
+      bottom: 200px;
+      right: 250px;
+      transform: rotate(15deg);
+    }
+
+    .bauhaus-triangle {
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 180px solid #06b6d4;
+      top: 800px;
+      right: 100px;
+      opacity: 0.1;
+    }
+
+    /* Main content container */
+    .container {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 120px;
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      top: 120px;
+      left: 120px;
+      width: 180px;
+      height: 180px;
+      background-image: url('varritech-logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: invert(1) brightness(2);
+    }
+
+    /* Hook text with strikethrough */
+    .hook-container {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .hook-strikethrough {
+      font-size: 72px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-decoration: line-through;
+      text-decoration-color: #bef264;
+      text-decoration-thickness: 4px;
+      margin-bottom: 20px;
+    }
+
+    .hook-pivot {
+      font-size: 84px;
+      font-weight: 700;
+      color: #bef264; /* Chartreuse */
+      line-height: 1.1;
+    }
+
+    /* Stat pills */
+    .stats-container {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 100px;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 40px 60px;
+      text-align: center;
+      min-width: 320px;
+    }
+
+    .stat-value {
+      font-size: 64px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .stat-label {
+      font-size: 28px;
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    /* Glassmorphism diff card */
+    .diff-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 60px 80px;
+      margin-bottom: 100px;
+      text-align: center;
+      max-width: 1400px;
+    }
+
+    .diff-title {
+      font-size: 42px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .diff-item {
+      text-align: center;
+    }
+
+    .diff-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .diff-text {
+      font-size: 32px;
+      color: #e5e7eb;
+      line-height: 1.4;
+    }
+
+    /* CTA */
+    .cta-container {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .cta-text {
+      font-size: 56px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .cta-subtext {
+      font-size: 36px;
+      color: #9ca3af;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-size: 32px;
+      color: #6b7280;
+      font-style: italic;
+      letter-spacing: 2px;
+    }
+
+    /* Repo URL at bottom */
+    .repo-url {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+      color: #bef264;
+      font-weight: 600;
+      background: rgba(191, 242, 100, 0.1);
+      padding: 20px 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(191, 242, 100, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Overlays -->
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- Bauhaus shapes -->
+  <div class="bauhaus-shape bauhaus-circle"></div>
+  <div class="bauhaus-shape bauhaus-rect"></div>
+  <div class="bauhaus-shape bauhaus-triangle"></div>
+
+  <!-- Logo -->
+  <div class="logo"></div>
+
+  <!-- Main content -->
+  <div class="container">
+    <!-- Hook -->
+    <div class="hook-container">
+      <div class="hook-strikethrough">Another AI Model Launch</div>
+      <div class="hook-pivot">$7 BILLION FOR A CREDIT RESELLER</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-container">
+      <div class="stat-pill">
+        <div class="stat-value">$7B+</div>
+        <div class="stat-label">Stripe Acquisition</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-value">~$100M</div>
+        <div class="stat-label">ARR at Exit</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-value">70x</div>
+        <div class="stat-label">Revenue Multiple</div>
+      </div>
+    </div>
+
+    <!-- Diff card -->
+    <div class="diff-card">
+      <div class="diff-title">THE PLAYBOOK</div>
+      <div class="diff-grid">
+        <div class="diff-item">
+          <div class="diff-icon">🔄</div>
+          <div class="diff-text">Buy API credits in bulk at 40-60% discount</div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-icon">🎯</div>
+          <div class="diff-text">Route intelligently across providers for max margin</div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-icon">💰</div>
+          <div class="diff-text">Sell to devs at markup + capture arbitrage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-container">
+      <div class="cta-text">FORK THE REPO</div>
+      <div class="cta-subtext">Full guide + runnable starter code inside</div>
+    </div>
+
+    <!-- Tagline -->
+    <div class="tagline">Bold ideas wait for no one</div>
+  </div>
+
+  <!-- Repo URL -->
+  <div class="repo-url">github.com/Varritech/openrouter-resale-economy</div>
+</body>
+</html>
