@@ -1,0 +1,26 @@
+{
+  "name": "credit-resale-starter",
+  "version": "1.0.0",
+  "description": "Starter kit for building an API credit resale marketplace (OpenRouter-style)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "api",
+    "marketplace",
+    "credits",
+    "resale",
+    "llm",
+    "openrouter"
+  ],
+  "author": "Varritech",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
